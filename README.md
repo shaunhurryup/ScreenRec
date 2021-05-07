@@ -16,6 +16,7 @@
 
 # USAGE
 
-1. add `API Key` and `Secret Key` to `screen_rec.py`
+1. add `API Key` and `Secret Key` to `screen_rec.py`, you can get it from [this](https://cloud.baidu.com/product/ocr_general) .
 
 2. run `main.py`
+
