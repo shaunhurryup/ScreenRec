@@ -17,8 +17,8 @@ class run(QMainWindow, Ui_MainWindow):
         self._keepStyle = False
         self._toClipboard = True
         self._way = "0"
-        self.API_Key = "lvM38ECpObMh15YY2qd7vc7R"
-        self.Secret_Key = "qQG1Do5I8fZivvCiFCchXnQFI8aNGymd"
+        self.API_Key = 【API Key】
+        self.Secret_Key = 【Secret Key】
 
     # 每当更改下拉框内容，触发一次槽函数，改变_comboBox的值
     def _comboBox(self, curIndex):
@@ -41,6 +41,7 @@ class run(QMainWindow, Ui_MainWindow):
     # 读取截图，返回截图
     def imread(self, ui):        
         img = ImageGrab.grabclipboard()
+        # img = cv2.imread("1.jpg")
         try:
             img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         except TypeError:
@@ -82,7 +83,7 @@ class run(QMainWindow, Ui_MainWindow):
         res = requests.post(url, data=params).json()
         return res['access_token']   
 
-    # # 第二次 Post 请求
+    # 第二次 Post 请求
     def baiduAPI(self, img):
         url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic" if self._way == "1" else \
               "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
