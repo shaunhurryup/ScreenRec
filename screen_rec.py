@@ -17,8 +17,8 @@ class run(QMainWindow, Ui_MainWindow):
         self._keepStyle = False
         self._toClipboard = True
         self._way = "0"
-        self.API_Key = 【API Key】
-        self.Secret_Key = 【Secret Key】
+        self.API_Key = "【API Key】"
+        self.Secret_Key = "【Secret Key】"
 
     # 每当更改下拉框内容，触发一次槽函数，改变_comboBox的值
     def _comboBox(self, curIndex):
