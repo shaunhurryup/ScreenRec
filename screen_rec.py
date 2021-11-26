@@ -30,25 +30,25 @@ class run(QMainWindow, Ui_MainWindow):
             self._way = "2"
 
     def _checkBox(self, isChecked):
-        if isChecked: self._keepStyle = True
-        else: self._keepStyle = False
+        if isChecked:
+            self._keepStyle = True
+        else:
+            self._keepStyle = False
 
     def _checkBox_2(self, isChecked):
-        print(isChecked)
-        if isChecked: self._toClipboard = True
-        else: self._toClipboard = False
+        if isChecked:
+            self._toClipboard = True
+        else:
+            self._toClipboard = False
 
     # 读取截图，返回截图
-    def imread(self, ui):        
+    def imread(self, ui):
         img = ImageGrab.grabclipboard()
-        # img = cv2.imread("1.jpg")
-        try:
-            img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        except TypeError:
-            ui.textBrowser.setText("剪切板未发现图片，请使用 Win+V 检查！")
+        if img is None:
+            ui.textBrowser.append("剪切板未发现图片，请使用 Win+V 检查！")
             return
-        else:
-            return img
+        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        return img
 
     # 使用PPOCR识别截图，返回识别结果
     def imrec(self, img):
@@ -71,29 +71,29 @@ class run(QMainWindow, Ui_MainWindow):
                 if self._keepStyle:
                     res += "\n"
         return res
- 
+
     # 第一次 Post 请求，获取access_token
     def get_access_token(self):
         url = 'https://aip.baidubce.com/oauth/2.0/token'
         params = {
-            'grant_type': 'client_credentials',      
-            'client_id': self.API_Key,  
-            'client_secret': self.Secret_Key  
+            'grant_type': 'client_credentials',
+            'client_id': self.API_Key,
+            'client_secret': self.Secret_Key
         }
         res = requests.post(url, data=params).json()
-        return res['access_token']   
+        return res['access_token']
 
     # 第二次 Post 请求
     def baiduAPI(self, img):
         url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic" if self._way == "1" else \
               "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
         url = url + "?access_token=" + self.get_access_token()
-        ret,buf = cv2.imencode(".png",img)
+        ret, buf = cv2.imencode(".png", img)
         img_bin = Image.fromarray(np.uint8(buf)).tobytes()
         img = base64.b64encode(img_bin)
         params = {"image": img}
         headers = {'content-type': 'application/x-www-form-urlencoded'}
-        res = requests.post(url, data=params, headers=headers).json()        
+        res = requests.post(url, data=params, headers=headers).json()
         return res
 
     # 将识别结果打印到文本框中
